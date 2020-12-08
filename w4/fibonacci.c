@@ -16,7 +16,6 @@ long fibonacci(int n)
     return f2;
 }
 
-
 long recursive_fibonacci(int n)
 {
     if (n <= 1)
