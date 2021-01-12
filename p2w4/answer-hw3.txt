@@ -1,0 +1,6 @@
+The array read is: 77 44 2 57 9 66 11 88 22 66 77 33 
+
+ average :  46.000000
+
+Maximum: 88
+

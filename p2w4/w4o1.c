@@ -1,0 +1,146 @@
+// ===================================================================================
+// Open and read a file of integers into an array that is created with the first integer telling you how many to read.
+// So  4  9  11  12  15  would mean create an int array size 4 and read in the remaining 4 values into data[].
+// Then compute their average as a double and their max as an int.
+// Print all this out neatly to the screen and to an output file named answer-hw3.
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_HW 20
+
+int total;
+int arr[] = {};
+int i = 0;
+
+// ===================================================================================
+// ================ Read input file & Create array and output file ===================
+// ===================================================================================
+void read_data(FILE *ifp, FILE *ofp, int d[])
+{
+    int num, i=0;
+
+    while(fscanf(ifp, "%d", &num) == 1)
+    {
+        if (i != 0)
+        {
+            d[i] = num;
+            printf("%d\n", d[i]);
+            fprintf(ofp, "%d\n", num);
+        } else {
+            total = num;
+        }
+           i++;
+        if (i > total)
+        {
+            printf("\nThe first number is the total indices for the array: %d\n\n", total);
+            return;
+        }
+    }
+}
+
+// ===================================================================================
+// =============================== Compute the average ===============================
+// ===================================================================================
+double average(FILE *ofp, int d[])
+{
+    double avg = 0.0;
+    int sum = 0;
+
+    for (i=0; i < total; i++)
+    {
+        sum += d[i];
+    }
+    printf("sum %d\n\n", sum);
+    printf("average %f\n\n", (float)sum / total);
+    fprintf(ofp, "\nSum is %d\n\n", sum);
+    fprintf(ofp, "Average is %f\n\n", (float)sum / total);
+    return(sum / total);
+}
+
+// ===================================================================================
+// ================================= Compute the Max =================================
+// ===================================================================================
+int max(FILE *ofp, int d[])
+{
+    int max = 0;
+
+    for (i=0; i < total; i++)
+    {
+        if (d[i] > max)
+        {
+            max = d[i];
+        }
+    }
+    printf("max %d\n\n", max);
+    fprintf(ofp, "Max is %d\n\n", max);
+    return max;
+}
+
+// ===================================================================================
+// ================================ Display input file ===============================
+// ===================================================================================
+void print_to_screen(FILE *ifp)
+{
+    int c;
+    rewind(ifp);  // make sure you are starting at the beginning of the file
+    while((c = getc(ifp)) != EOF) // get each number until eof is reached
+    {          
+        putc(c, stdout);  // put number to screen output
+    }
+}
+
+// ===================================================================================
+// ============================= Display the output file =============================
+// ===================================================================================
+void print_outfile(FILE *ofp)
+{
+    int c;
+    rewind(ofp);  // make sure you are starting at the beginning of the file
+    while((c = getc(ofp)) != EOF) // get each number until eof is reached
+    {          
+        putc(c, stdout);  // put number to screen output
+    }
+}
+
+// ===================================================================================
+// ==================================== Main Code ====================================
+// ===================================================================================
+
+// main can take int arg c (count of # of strings to find on the command line)
+// and char *argv[] - these are the strings)
+
+// arg c count of stuff on command line 
+// *argv[] a vector-stores strings
+
+// main can take int arg c (count of # of strings to find on the command line)
+// and char *argv[] - these are the strings)
+
+// arg c count of stuff on command line 
+// *argv[] a vector-stores strings
+int main(int argc, char *argv[])
+{
+    int i = 1, sz = MAX_HW;
+    int data[MAX_HW]={ 100, 0}; //  declare array data
+ 
+    FILE *ifp, *ofp;  // pointers to input and output file
+
+    if(argc != 3) // if something is missing
+    {
+        printf("Need executable input file output file\n");
+        exit(1);
+    }
+
+    ifp = fopen(argv[1], "r");   // input for just reading
+    ofp = fopen(argv[2], "w+");   // output for writing & reading
+
+    read_data(ifp, ofp, data);
+    average(ofp, data);
+    max(ofp, data);
+    // printf("The average is: %10f\n\n", average(data));
+    printf("My %s file as read (which includes the total number) is:\n", argv[1]);
+    print_to_screen(ifp);
+    printf("\n\n");
+    printf("My %s output file is\n", argv[2]);
+    print_outfile(ofp);
+    printf("\n\n");
+}
